@@ -7,7 +7,7 @@ int d4 = 9;
 int d5 = 10;
 int d6 = 12;
 int d7 = 13;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LiquidCrystal lccd(rs, en, d4, d5, d6, d7);
 
 int sensePin = 2;
 DHT HT(sensePin, Type);
@@ -23,7 +23,7 @@ void setup()
   Serial.begin(9600);
   HT.begin();
   delay(setTime);
-  lcd.begin(16, 2);
+  lccd.begin(16, 2);
 }
 
 void loop()
@@ -32,15 +32,15 @@ void loop()
   tempC = HT.readTemperature();
   tempF = HT.readTemperature(true);
 
-  lcd.setCursor(0, 0);
-  lcd.print("Temp C= ");
-  lcd.print(tempC);
-  lcd.setCursor(0, 1);
-  lcd.print("Humidity= ");
-  lcd.print(humidity);
-  lcd.print(" %");
+  lccd.setCursor(0, 0);
+  lccd.print("Temp C= ");
+  lccd.print(tempC);
+  lccd.setCursor(0, 1);
+  lccd.print("Humidity= ");
+  lccd.print(humidity);
+  lccd.print(" %");
   delay(500);
-  lcd.clear();
+  lccd.clear();
 
   Serial.print("Humidity: ");
   Serial.print(humidity);

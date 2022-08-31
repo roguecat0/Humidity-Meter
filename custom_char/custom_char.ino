@@ -46,7 +46,7 @@
 // initialize the library by associating any needed LCD interface pin
 // with the arduino pin number it is connected to
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 12, d7 = 13;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LiquidCrystal lccd(rs, en, d4, d5, d6, d7);
 
 // make some custom characters:
 byte heart[8] = {
@@ -102,27 +102,27 @@ byte armsUp[8] = {
 void setup()
 {
     // initialize LCD and set up the number of columns and rows:
-    lcd.begin(16, 2);
+    lccd.begin(16, 2);
 
     // create a new character
-    lcd.createChar(0, heart);
+    lccd.createChar(0, heart);
     // create a new character
-    lcd.createChar(1, smiley);
+    lccd.createChar(1, smiley);
     // create a new character
-    lcd.createChar(2, frownie);
+    lccd.createChar(2, frownie);
     // create a new character
-    lcd.createChar(3, armsDown);
+    lccd.createChar(3, armsDown);
     // create a new character
-    lcd.createChar(4, armsUp);
+    lccd.createChar(4, armsUp);
 
     // set the cursor to the top left
-    lcd.setCursor(0, 0);
+    lccd.setCursor(0, 0);
 
     // Print a message to the lcd.
-    lcd.print("I ");
-    lcd.write(byte(0)); // when calling lcd.write() '0' must be cast as a byte
-    lcd.print(" Arduino! ");
-    lcd.write((byte)1);
+    lccd.print("I ");
+    lccd.write(byte(0)); // when calling lcd.write() '0' must be cast as a byte
+    lccd.print(" Arduino! ");
+    lccd.write((byte)1);
 }
 
 void loop()
@@ -130,12 +130,12 @@ void loop()
     // map the result to 200 - 1000:
     int delayTime = 300;
     // set the cursor to the bottom row, 5th position:
-    lcd.setCursor(4, 1);
+    lccd.setCursor(4, 1);
     // draw the little man, arms down:
-    lcd.write(3);
+    lccd.write(3);
     delay(delayTime);
-    lcd.setCursor(4, 1);
+    lccd.setCursor(4, 1);
     // draw him arms up:
-    lcd.write(4);
+    lccd.write(4);
     delay(delayTime);
 }

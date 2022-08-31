@@ -6,14 +6,14 @@
 // const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 12, d7 = 13;
 
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LiquidCrystal lccd(rs, en, d4, d5, d6, d7);
 
 void setup()
 {
 
     // set up the LCD's number of columns and rows:
 
-    lcd.begin(16, 2);
+    lccd.begin(16, 2);
 }
 
 void loop()
@@ -21,41 +21,41 @@ void loop()
 
     // set the cursor to (0,0):
 
-    lcd.setCursor(0, 0);
+    lccd.setCursor(0, 0);
 
     // print from 0 to 9:
 
     for (int thisChar = 0; thisChar < 16; thisChar++)
     {
 
-        lcd.print(thisChar);
+        lccd.print(thisChar);
 
         delay(500);
     }
 
     // set the cursor to (16,1):
 
-    lcd.setCursor(6, 1);
+    lccd.setCursor(6, 1);
 
     // set the display to automatically scroll:
 
-    lcd.autoscroll();
+    lccd.autoscroll();
 
     // print from 0 to 9:
 
     for (int thisChar = 0; thisChar < 10; thisChar++)
     {
 
-        lcd.print(thisChar);
+        lccd.print(thisChar);
 
         delay(500);
     }
 
     // turn off automatic scrolling
 
-    lcd.noAutoscroll();
+    lccd.noAutoscroll();
 
     // clear screen for the next loop:
 
-    lcd.clear();
+    lccd.clear();
 }

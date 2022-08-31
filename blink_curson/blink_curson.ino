@@ -5,18 +5,18 @@
 
 const int rs = 7, en = 8, d4 = 9, d5 = 10, d6 = 12, d7 = 13;
 
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LiquidCrystal lccd(rs, en, d4, d5, d6, d7);
 
 void setup()
 {
 
     // set up the LCD's number of columns and rows:
 
-    lcd.begin(16, 2);
+    lccd.begin(16, 2);
 
     // Print a message to the LCD.
 
-    lcd.print("hello, world!");
+    lccd.print("hello, world!");
 }
 
 void loop()
@@ -24,13 +24,13 @@ void loop()
 
     // Turn off the blinking cursor:
 
-    lcd.noBlink();
+    lccd.noBlink();
 
     delay(3000);
 
     // Turn on the blinking cursor:
 
-    lcd.blink();
+    lccd.blink();
 
     delay(3000);
 }
