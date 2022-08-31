@@ -17,7 +17,7 @@ public:
     {
         lcd.begin(16, 2);
     }
-    void setPixel(int x, int y)
+    void point(int x, int y)
     {
         scrn[y] |= (1u << x);
     }
@@ -31,7 +31,7 @@ public:
         char str[50];
         float minDist;
         float tmpDist;
-        setPixel(edge[0] + x1, edge[1] + y1);
+        point(edge[0] + x1, edge[1] + y1);
         while (edge[0] != 0 || edge[1] != 0)
         {
             minDist = 100;
@@ -56,7 +56,6 @@ public:
                     if (tmpDist < minDist)
                     {
                         minDist = tmpDist;
-                        Serial.println("new Low!");
                         nextEdge[0] = tmp[0];
                         nextEdge[1] = tmp[1];
                     }
@@ -64,7 +63,22 @@ public:
             }
             edge[0] = nextEdge[0];
             edge[1] = nextEdge[1];
-            setPixel(edge[0] + x1, edge[1] + y1);
+            point(edge[0] + x1, edge[1] + y1);
+        }
+    }
+    void circle(int x, int y, int dist)
+    {
+        char str[30];
+        Serial.println("Start");
+        for (float rad = 0; rad < 6.3; rad = rad + 0.4)
+        {
+            int rx = round((float)dist * cos(rad));
+            int ry = round((float)dist * sin(rad));
+            sprintf(str, "rx: %d, ry: %d, rad: ", rx, ry);
+            Serial.print(str);
+            Serial.println(cos(rad));
+            point(rx + x, ry + y);
+            delay(10);
         }
     }
     void draw()
@@ -97,7 +111,7 @@ void setup()
 void loop()
 {
 
-    for (int j = 0; j < 8; j++)
+    for (int j = 0; j < 3; j++)
     {
         // for (int i = 0; i < 5; i++)
         // {
@@ -105,10 +119,9 @@ void loop()
         //     disp.draw();
         //     delay(500);
         // }
-        disp.line(0, 0, 4, j);
+        disp.circle(2, 4, j);
         disp.draw();
-        delay(50);
+        delay(1000);
         disp.clr();
     }
-    disp.clr();
 }
