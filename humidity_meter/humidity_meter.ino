@@ -1,18 +1,21 @@
-#include <LiquidCrystal.h>
-#include <DHT_U.h>
-#include <DHT.h>
-
+#include "DHT.h"
 #define Type DHT11
+#include <LiquidCrystal.h>
+int rs = 7;
+int en = 8;
+int d4 = 9;
+int d5 = 10;
+int d6 = 12;
+int d7 = 13;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
 int sensePin = 2;
 DHT HT(sensePin, Type);
 float humidity;
 float tempC;
 float tempF;
 int setTime = 500;
-
-// warning humidityes
-float greenRange[2] = {35, 60};
-float orangeRange[2] = {30, 70};
+int dt = 1000;
 
 void setup()
 {
@@ -20,15 +23,30 @@ void setup()
   Serial.begin(9600);
   HT.begin();
   delay(setTime);
+  lcd.begin(16, 2);
 }
+
 void loop()
 {
   humidity = HT.readHumidity();
-  tempC = HT.readTemperature(false);
+  tempC = HT.readTemperature();
   tempF = HT.readTemperature(true);
-  Serial.print("Temperature: ");
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temp C= ");
+  lcd.print(tempC);
+  lcd.setCursor(0, 1);
+  lcd.print("Humidity= ");
+  lcd.print(humidity);
+  lcd.print(" %");
+  delay(500);
+  lcd.clear();
+
+  Serial.print("Humidity: ");
+  Serial.print(humidity);
+  Serial.print("% Temperature ");
   Serial.print(tempC);
-  Serial.print(", Humidity: ");
-  Serial.println(humidity);
-  delay(1000);
+  Serial.print(" C ");
+  Serial.print(tempF);
+  Serial.println(" F ");
 }

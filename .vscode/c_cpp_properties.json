@@ -18,8 +18,6 @@
                 "/home/tevon/software/arduino-1.8.16/hardware/arduino/avr/cores/arduino",
                 "/home/tevon/software/arduino-1.8.16/hardware/arduino/avr/variants/standard",
                 "/home/tevon/software/arduino-1.8.16/libraries/LiquidCrystal/src",
-                "/home/tevon/Arduino/libraries/DHT_sensor_library",
-                "/home/tevon/Arduino/libraries/Adafruit_Unified_Sensor",
                 "/home/tevon/software/arduino-1.8.16/hardware/tools/avr/lib/gcc/avr/7.3.0/include",
                 "/home/tevon/software/arduino-1.8.16/hardware/tools/avr/lib/gcc/avr/7.3.0/include-fixed",
                 "/home/tevon/software/arduino-1.8.16/hardware/tools/avr/avr/include"
