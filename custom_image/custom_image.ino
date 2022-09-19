@@ -1,10 +1,51 @@
 #include <LiquidCrystal.h>
+#define BUF_SIZE 33
 
+char *int2bin(int a, char *buffer, int buf_size)
+{
+    buffer += (buf_size - 1);
+
+    for (int i = 31; i >= 0; i--)
+    {
+        *buffer-- = (a & 1) + '0';
+
+        a >>= 1;
+    }
+
+    return buffer;
+}
 class Display
 {
 private:
+    int longsz = 32;
+    char str[30];
+    byte getByteRow(int x, int y)
+    {
+        byte bits;
+        int cutoff = longsz - 5;
+        int i = x / longsz;
+        int shft = x % longsz;
+        if (shft > cutoff && i < 2)
+            bits = (scrn[y][i + 1] << 8 - shft) | (scrn[y][i] >> shft);
+        else
+            bits = scrn[y][i] >> shft;
+        return bits;
+    }
+    byte *getByteScreen(int col, int row)
+    {
+        static byte byteSrcn[8];
+        int x = col * 6, y = row * 9;
+        for (int i = 0; i < 1 /*8*/; i++)
+        {
+            byteSrcn[i] = getByteRow(x, y + i);
+            // Serial.println(byteSrcn[i]);
+        }
+
+        return byteSrcn;
+    }
+
 public:
-    byte scrn[8];
+    unsigned long int scrn[17][3];
     LiquidCrystal lcd;
 
     Display(
@@ -19,7 +60,13 @@ public:
     }
     void point(int x, int y)
     {
-        scrn[y] |= (1u << x);
+        // char buffer[BUF_SIZE];
+        // buffer[BUF_SIZE - 1] = '\0';
+        // int2bin(scrn[y][x / longsz], buffer, BUF_SIZE - 1);
+        // Serial.println("int: ");
+        // Serial.println(buffer);
+        scrn[y][x / longsz] |= (1u << x % longsz);
+        // scrn[y] |= (1u << x);
     }
     void line(int x1, int y1, int x2, int y2)
     {
@@ -74,24 +121,44 @@ public:
         {
             int rx = round((float)dist * cos(rad));
             int ry = round((float)dist * sin(rad));
-            sprintf(str, "rx: %d, ry: %d, rad: ", rx, ry);
-            Serial.print(str);
-            Serial.println(cos(rad));
             point(rx + x, ry + y);
             delay(10);
         }
     }
     void draw()
     {
-        lcd.createChar(1, scrn);
-        lcd.setCursor(0, 0);
-        lcd.write(1);
+        byte *srn;
+        for (int j = 0; j < 1; j++)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                srn = getByteScreen(i, j);
+                char buffer[BUF_SIZE];
+                buffer[BUF_SIZE - 1] = '\0';
+                int2bin(srn[0], buffer, BUF_SIZE - 1);
+                Serial.print(i);
+                Serial.print(" : ");
+                Serial.println(buffer);
+                lcd.createChar(1, srn);
+                delay(100);
+                lcd.setCursor(15 - i, j);
+                delay(100);
+                lcd.write(1);
+                delay(100);
+            }
+        }
+        // lcd.createChar(1, scrn);
+        // lcd.setCursor(0, 0);
+        // lcd.write(1);
     }
     void clr()
     {
-        for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 17; j++)
         {
-            scrn[i] = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                scrn[j][i] = 0;
+            }
         }
     }
 };
@@ -111,17 +178,12 @@ void setup()
 void loop()
 {
 
-    for (int j = 0; j < 3; j++)
+    for (int i = 0; i < 9; i++)
     {
-        // for (int i = 0; i < 5; i++)
-        // {
-        //     disp.setPixel(i, j);
-        //     disp.draw();
-        //     delay(500);
-        // }
-        disp.circle(2, 4, j);
+        disp.point(i, 0);
         disp.draw();
+        // Serial.println(disp.scrn[0][0]);
         delay(1000);
-        disp.clr();
     }
+    disp.clr();
 }
